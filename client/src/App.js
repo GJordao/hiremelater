@@ -3,26 +3,33 @@ import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
-    componentWillMount() {
-        fetch("http://localhost:5000/me")
-            .then(resp => resp.json().then(data => console.log(data)))
-            .catch(err => {
-                console.log("An error has occured", err);
-            });
+    constructor(props) {
+        super(props);
+        this.fileInput = React.createRef();
     }
+    handleSubmit = event => {
+        event.preventDefault();
+        const data = new FormData();
+        data.append("file", this.fileInput.current.files[0]);
+        data.append("name", "sampleFile");
+        data.append("description", "sampleFile");
+        fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: data
+        });
+        console.log(`Selected file - ${data}`);
+    };
 
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to Hire me later</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to
-                    reload.
-                </p>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Upload file:
+                    <input type="file" name="sampleFile" ref={this.fileInput} />
+                </label>
+                <br />
+                <button type="submit">Submit</button>
+            </form>
         );
     }
 }

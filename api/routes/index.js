@@ -1,16 +1,22 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-/* GET home page. */
-router.get("/", function(req, res, next) {
-    res.render("index", { title: "Express" });
-});
+router.post("/upload", function(req, res) {
+    try {
+        if (!req.files) return res.status(400).send("No files were uploaded.");
 
-router.get("/me", function(req, res, next) {
-    res.json({
-        code: 200,
-        status: "Success"
-    });
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        let sampleFile = req.files.file;
+        console.log(sampleFile);
+        // Use the mv() method to place the file somewhere on your server
+        sampleFile.mv(`/usr/files/${sampleFile.name}`, function(err) {
+            if (err) return res.status(500).send(err);
+
+            res.send("File uploaded!");
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;

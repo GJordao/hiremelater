@@ -24,10 +24,26 @@ services:
             - "5000:3000"
         volumes:
             - ./api/:/usr/src/app
+            - ./api/filestorage:/usr/files
         networks:
             wpnetwork:
                 aliases:
                     - api
+
+    elasticsearch:
+        build: ./database
+        image: hiremelaterdatabase:0.0.1
+        restart: unless-stopped
+        environment:
+            - cluster.name=hiremelater
+        ports:
+            - "9200:9200"
+        volumes:
+            - ./database/data:/usr/share/elasticsearch/data
+        networks:
+            wpnetwork:
+                aliases:
+                    - database
 
 networks:
     wpnetwork:
