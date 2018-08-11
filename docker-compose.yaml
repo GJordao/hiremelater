@@ -1,0 +1,34 @@
+version: "2"
+
+services:
+    client:
+        build: ./client
+        image: hiremelaterclient:0.0.1
+        restart: unless-stopped
+        ports:
+            - "8080:3000"
+        volumes:
+            - ./client/:/usr/src/app
+        depends_on:
+            - api
+        networks:
+            wpnetwork:
+                aliases:
+                    - client
+
+    api:
+        build: ./api
+        image: hiremelaterapi:0.0.1
+        restart: unless-stopped
+        ports:
+            - "5000:3000"
+        volumes:
+            - ./api/:/usr/src/app
+        networks:
+            wpnetwork:
+                aliases:
+                    - api
+
+networks:
+    wpnetwork:
+        driver: bridge
