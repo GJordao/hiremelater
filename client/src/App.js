@@ -7,6 +7,7 @@ class App extends Component {
         super(props);
         this.fileInput = React.createRef();
     }
+
     handleSubmit = event => {
         event.preventDefault();
         const data = new FormData();
@@ -20,16 +21,33 @@ class App extends Component {
         console.log(`Selected file - ${data}`);
     };
 
+    fetchCurriculums = () => {
+        fetch("http://localhost:5000/curriculum?offset=0")
+            .then(response =>
+                response.json().then(parsedResponse => {
+                    console.log(parsedResponse);
+                })
+            )
+            .catch(err => console.log("Error: ", err));
+    };
+
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Upload file:
-                    <input type="file" name="sampleFile" ref={this.fileInput} />
-                </label>
-                <br />
-                <button type="submit">Submit</button>
-            </form>
+            <div>
+                <button onClick={this.fetchCurriculums}>Get curriculums</button>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Upload file:
+                        <input
+                            type="file"
+                            name="sampleFile"
+                            ref={this.fileInput}
+                        />
+                    </label>
+                    <br />
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         );
     }
 }

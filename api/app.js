@@ -5,7 +5,7 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const logger = require("morgan");
 const path = require("path");
-
+const elastic = require("./services/elastic-search");
 // Config
 const app = express();
 app.use(cookieParser());
@@ -49,5 +49,8 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render("error");
 });
+
+// Create the pipeline for file indexing in elastic-search
+elastic.createPipeline();
 
 module.exports = app;

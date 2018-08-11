@@ -1,35 +1,6 @@
 version: "2"
 
 services:
-    client:
-        build: ./client
-        image: hiremelaterclient:0.0.1
-        restart: unless-stopped
-        ports:
-            - "8080:3000"
-        volumes:
-            - ./client/:/usr/src/app
-        depends_on:
-            - api
-        networks:
-            wpnetwork:
-                aliases:
-                    - client
-
-    api:
-        build: ./api
-        image: hiremelaterapi:0.0.1
-        restart: unless-stopped
-        ports:
-            - "5000:3000"
-        volumes:
-            - ./api/:/usr/src/app
-            - ./api/filestorage:/usr/files
-        networks:
-            wpnetwork:
-                aliases:
-                    - api
-
     elasticsearch:
         build: ./database
         image: hiremelaterdatabase:0.0.1
@@ -44,6 +15,36 @@ services:
             wpnetwork:
                 aliases:
                     - database
+    api:
+        build: ./api
+        image: hiremelaterapi:0.0.1
+        restart: unless-stopped
+        ports:
+            - "5000:3000"
+        volumes:
+            - ./api/:/usr/src/app
+            - ./api/filestorage:/usr/files
+        depends_on:
+            - elasticsearch
+        networks:
+            wpnetwork:
+                aliases:
+                    - api
+                    
+    client:
+        build: ./client
+        image: hiremelaterclient:0.0.1
+        restart: unless-stopped
+        ports:
+            - "8080:3000"
+        volumes:
+            - ./client/:/usr/src/app
+        depends_on:
+            - api
+        networks:
+            wpnetwork:
+                aliases:
+                    - client
 
 networks:
     wpnetwork:
