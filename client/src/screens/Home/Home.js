@@ -1,5 +1,8 @@
 // React
 import React, { Component } from "react";
+import { connect } from "react-redux";
+// Ducks
+import { getCurriculums } from "./Home.ducks";
 // Styles
 import { css } from "aphrodite";
 import styles from "./Home.css";
@@ -10,6 +13,10 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.fileInput = React.createRef();
+    }
+
+    componentWillMount() {
+        this.props.getCurriculums();
     }
 
     handleSubmit = event => {
@@ -25,40 +32,47 @@ class Home extends Component {
         console.log(`Selected file - ${data}`);
     };
 
-    fetchCurriculums = () => {
-        fetch("http://localhost:5000/curriculum?offset=0")
-            .then(response =>
-                response.json().then(parsedResponse => {
-                    console.log(parsedResponse);
-                })
-            )
-            .catch(err => console.log("Error: ", err));
-    };
-
     render() {
         return (
             <div className={css(styles.home)}>
-                <div className={css(styles.contentContainer)}>
-                    <SearchBar />
-                    <button onClick={this.fetchCurriculums}>
-                        Get curriculums
-                    </button>
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Upload file:
-                            <input
-                                type="file"
-                                name="sampleFile"
-                                ref={this.fileInput}
-                            />
-                        </label>
-                        <br />
-                        <button type="submit">Submit</button>
-                    </form>
+                <SearchBar />
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Upload file:
+                        <input
+                            type="file"
+                            name="sampleFile"
+                            ref={this.fileInput}
+                        />
+                    </label>
+                    <br />
+                    <button type="submit">Submit</button>
+                </form>
+                <div
+                    style={{
+                        flex: 1,
+                        backgroundColor: "blue"
+                    }}
+                    onDrop={e => {
+                        e.preventDefault();
+                        console.log(e.dataTransfer.files);
+                    }}
+                    onDragOver={e => e.preventDefault()}
+                >
+                    Drop here
                 </div>
             </div>
         );
     }
 }
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        curriculums: state.curriculums
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { getCurriculums }
+)(Home);
