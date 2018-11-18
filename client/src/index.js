@@ -1,10 +1,18 @@
 // React
 import React from "react";
 import ReactDOM from "react-dom";
-// Config
-import registerServiceWorker from "./config/registerServiceWorker";
+// Redux
+import { Provider } from "react-redux";
+import store from "./config/store";
 // Components
 import Home from "./screens/Home";
 
-ReactDOM.render(<Home />, document.getElementById("root"));
-registerServiceWorker();
+const App = () => {
+    return (
+        <Provider store={store}>
+            <Home />
+        </Provider>
+    );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));

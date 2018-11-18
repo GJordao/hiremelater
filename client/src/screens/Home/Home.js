@@ -1,5 +1,9 @@
 // React
-import React from "react";
+import React, { Component } from "react";
+// Redux
+import { connect } from "react-redux";
+// Ducks
+import { getCurriculums } from "./Home.ducks";
 // Styles
 import { css } from "aphrodite";
 import styles from "./Home.css";
@@ -8,14 +12,29 @@ import CurriculumArea from "./components/CurriculumArea";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 
-function Home() {
-    return (
-        <div className={css(styles.home)}>
-            <NavBar />
-            <SearchBar />
-            <CurriculumArea />
-        </div>
-    );
+class Home extends Component {
+    componentWillMount() {
+        this.props.getCurriculums();
+    }
+
+    render() {
+        return (
+            <div className={css(styles.home)}>
+                <NavBar />
+                <SearchBar />
+                <CurriculumArea />
+            </div>
+        );
+    }
 }
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        curriculums: state.curriculums
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    { getCurriculums }
+)(Home);
