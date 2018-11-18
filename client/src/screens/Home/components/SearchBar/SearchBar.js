@@ -3,13 +3,30 @@ import React from "react";
 // Styles
 import { css } from "aphrodite";
 import styles from "./SearchBar.css";
+// Components
+import InputAdornment from "@material-ui/core/InputAdornment";
+import TextField from "@material-ui/core/TextField";
 
-const SearchBar = () => {
+function SearchBar() {
     return (
-        <div className={css(styles.searchBar)}>
-            <input className={css(styles.input)} type={"text"} />
-        </div>
+        <TextField
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position={"start"}>
+                        <button className={css(styles.searchButton)}>
+                            <img
+                                alt={"Search curriculums"}
+                                src={require("./../../../../images/icons/ic_search.svg")}
+                            />
+                        </button>
+                    </InputAdornment>
+                )
+            }}
+            placeholder={"Search for curriculums"}
+            type={"search"}
+            variant={"outlined"}
+        />
     );
-};
+}
 
 export default SearchBar;

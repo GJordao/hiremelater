@@ -2,12 +2,11 @@
 import { StyleSheet } from "aphrodite/no-important";
 
 const styles = StyleSheet.create({
-    home: {
-        backgroundColor: "#fbfbfb",
-        display: "flex",
+    divider: {
+        backgroundColor: "rgba(0,0,0, .3)",
         flex: 1,
-        flexDirection: "column",
-        padding: "84px 5%"
+        marginLeft: 10,
+        minHeight: 1
     }
 });
 

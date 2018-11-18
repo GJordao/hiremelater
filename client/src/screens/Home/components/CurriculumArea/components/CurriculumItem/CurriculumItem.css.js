@@ -2,12 +2,13 @@
 import { StyleSheet } from "aphrodite/no-important";
 
 const styles = StyleSheet.create({
-    home: {
-        backgroundColor: "#fbfbfb",
+    content: {
         display: "flex",
-        flex: 1,
-        flexDirection: "column",
-        padding: "84px 5%"
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    image: {
+        height: 200
     }
 });
 

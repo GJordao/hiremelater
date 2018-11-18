@@ -2,11 +2,11 @@
 import { StyleSheet } from "aphrodite/no-important";
 
 const styles = StyleSheet.create({
-    searchButton: {
-        backgroundColor: "transparent",
-        border: "none",
-        cursor: "pointer",
-        outline: "none"
+    curriculumArea: {
+        marginTop: 24,
+        minHeight: 665,
+        padding: 20,
+        position: "relative"
     }
 });
 
