@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 function SearchBar() {
     return (
         <TextField
+        className={css(styles.searchBar)}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position={"start"}>

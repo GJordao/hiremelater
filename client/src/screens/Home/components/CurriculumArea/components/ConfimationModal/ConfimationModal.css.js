@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         display: "flex",
         flexDirection: "column",
-        maxHeight: 250,
+        maxHeight: "60vh",
         overflow: "auto",
         padding: "10px 25px 25px 25px",
         width: 350

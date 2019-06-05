@@ -3,6 +3,7 @@ import { StyleSheet } from "aphrodite/no-important";
 
 const styles = StyleSheet.create({
     home: {
+        alignItems: "center",
         backgroundColor: "#fbfbfb",
         display: "flex",
         flex: 1,

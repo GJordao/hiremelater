@@ -15,7 +15,7 @@ function CurriculumItem({ email, name, url }) {
     const image =
         url || require("./../../../../../../images/default_profile.jpg");
     return (
-        <Card>
+        <Card className={css(styles.content)}>
             <CardMedia
                 className={css(styles.image)}
                 image={image}

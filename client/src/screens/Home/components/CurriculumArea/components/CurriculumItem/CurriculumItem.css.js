@@ -3,9 +3,8 @@ import { StyleSheet } from "aphrodite/no-important";
 
 const styles = StyleSheet.create({
     content: {
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap"
+        marginBottom: 20,
+        marginLeft: 20
     },
     image: {
         height: 200
