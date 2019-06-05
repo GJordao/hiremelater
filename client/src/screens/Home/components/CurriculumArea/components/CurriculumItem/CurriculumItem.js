@@ -12,8 +12,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
 function CurriculumItem({ email, name, url }) {
-    const image =
-        url || require("./../../../../../../images/default_profile.jpg");
+    const image = require("./../../../../../../images/default_profile.jpg");
+    let fileName = name || email || "curriculum";
+    fileName += ".pdf";
     return (
         <Card className={css(styles.content)}>
             <CardMedia
@@ -27,7 +28,13 @@ function CurriculumItem({ email, name, url }) {
             </CardContent>
             <CardActions>
                 <Button size="small" color="primary">
-                    Read Curriculum
+                    <a
+                        className={css(styles.link)}
+                        download={fileName}
+                        href={url}
+                    >
+                        Download Curriculum
+                    </a>
                 </Button>
             </CardActions>
         </Card>

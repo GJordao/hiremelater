@@ -4,6 +4,7 @@ const GET_CURRICULUMS_SUCCESS = "GET_CURRICULUMS_SUCCESS";
 const GET_CURRICULUMS_FAILURE = "GET_CURRICULUMS_FAILURE";
 
 const defaultState = {
+    total: 0,
     list: [],
     error: null
 };
@@ -12,7 +13,7 @@ const defaultState = {
 export default (state = defaultState, action) => {
     switch (action.type) {
         case GET_CURRICULUMS_SUCCESS:
-            return Object.assign({}, state, { list: action.payload });
+            return Object.assign({}, state, { list: action.payload.data, total: action.payload.total });
         case GET_CURRICULUMS_FAILURE:
             const { error } = action.payload;
             return Object.assign({}, state, {
@@ -48,10 +49,8 @@ export function getCurriculums() {
                 throw new Error("Data not sent from the server");
             }
             dispatch(getCurriculumsSuccess(response.data.curriculums));
-            console.log(response);
         } catch (error) {
             dispatch(getCurriculumsFailure(error));
-            console.log(error);
         }
     };
 }

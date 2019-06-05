@@ -29,7 +29,6 @@ function ConfimationModal({ fileList, onClose, open }) {
                             </div>
                             <div className={css(styles.modalInput)}>
                                 <TextField
-                                    defaultValue={file.name || ""}
                                     label={"Name"}
                                     name={`file-${index}-name`}
                                 />
