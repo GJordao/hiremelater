@@ -50,18 +50,32 @@ exports.createPipeline = async function() {
     }
 };
 
-exports.indexDocument = async function(document) {
+exports.indexDocument = async function(document, metadata) {
     const response = await elasticClient.index({
         index: INDEX_ID,
         type: DOCUMENT_TYPE,
         pipeline: PIPELINE_ID,
         body: {
-            data: document
+            data: document,
+            metadata: metadata
         }
     });
 
     return response;
 };
+
+function mapDocumentToResponse(document) {
+    const response = {};
+    response.file = document._source.data;
+    response.email = "";
+    response.name = document._source.attachment.author || "";
+    if (document._source.metadata) {
+        response.email = document._source.metadata.email;
+        response.name = document._source.metadata.name || response.name;
+    }
+
+    return response;
+}
 
 exports.fetchDocuments = async function(offset = 0) {
     const response = await elasticClient.search({
@@ -70,5 +84,8 @@ exports.fetchDocuments = async function(offset = 0) {
         size: 15
     });
 
-    return response;
+    return {
+        total: response.hits.total,
+        data: response.hits.hits.map((hit) => mapDocumentToResponse(hit))
+    };
 };

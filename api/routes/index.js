@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const elastic = require("./../services/elastic-search");
 
-async function indexAndMoveDocument(doc) {
+async function indexAndMoveDocument(doc, metadata) {
     const documentBase64 = Buffer.from(doc.data).toString("base64");
-    const response = await elastic.indexDocument(documentBase64);
+    const response = await elastic.indexDocument(documentBase64, metadata);
     await doc.mv(`/usr/files/${response._id}.pdf`);
 }
 
@@ -15,11 +15,15 @@ router.post("/curriculum", async function(req, res) {
 
     try {
         const fileNames = Object.keys(req.files);
-
         for (const fileName of fileNames) {
-            await indexAndMoveDocument(req.files[fileName]);
+            const metadata = {
+                email: req.body[`${fileName}-email`],
+                name: req.body[`${fileName}-name`]
+            };
+
+            await indexAndMoveDocument(req.files[fileName], metadata);
         }
-        
+
         res.sendStatus(200);
     } catch (error) {
         console.log("Failure: ", error);
@@ -32,11 +36,8 @@ router.get("/curriculum", async function(req, res) {
     // TODO: Check how to filter fields sent by ES so we can remove the base64 string because of the size
     try {
         const response = await elastic.fetchDocuments(req.query.offset);
-        if (response.hits) {
-            res.json({ curriculums: response.hits.hits });
-        } else {
-            throw new Error("Error while processing elastic search");
-        }
+
+        res.json({ curriculums: response });
     } catch (error) {
         console.log("Failure", error);
         res.sendStatus(500);
