@@ -2,16 +2,24 @@ const express = require("express");
 const router = express.Router();
 const elastic = require("./../services/elastic-search");
 
-router.post("/upload", async function(req, res) {
+async function indexAndMoveDocument(doc) {
+    const documentBase64 = Buffer.from(doc.data).toString("base64");
+    const response = await elastic.indexDocument(documentBase64);
+    await doc.mv(`/usr/files/${response._id}.pdf`);
+}
+
+router.post("/curriculum", async function(req, res) {
     if (!req.files) {
         return res.status(400).json({ message: "No files uploaded" });
     }
 
     try {
-        const doc = req.files.file;
-        const documentBase64 = Buffer.from(doc.data).toString("base64");
-        const response = await elastic.indexDocument(documentBase64);
-        await doc.mv(`/usr/files/${response._id}.pdf`);
+        const fileNames = Object.keys(req.files);
+
+        for (const fileName of fileNames) {
+            await indexAndMoveDocument(req.files[fileName]);
+        }
+        
         res.sendStatus(200);
     } catch (error) {
         console.log("Failure: ", error);
